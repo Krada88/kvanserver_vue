@@ -8,9 +8,7 @@
                     <h6>18 августа 2014г.</h6>
                     <div>
                         <img src="@/assets/pic/news1.jpg" width="80" height="80" alt="">
-                        <nuxt-link :to="~/posts/${post.id}">
-                            {{ post.title }}
-                        </nuxt-link>
+                        <nuxt-link :to="'/news/'+post.id+'/'">{{ post.title }}</nuxt-link>
                     </div>
                 </div>
 
