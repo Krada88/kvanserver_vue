@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="content">
-            <h1><span>Новости</span></h1>
+            <h1><span>Новости {{page}}</span></h1>
 
             <div class="news">
                 <div v-for="(post, index) in posts" :key="index">
@@ -31,6 +31,7 @@
                 </div>
             </div>
         </div>
+        <paginate-links for="posts" :show-step-links="true"></paginate-links>
         <div class="bottom">
             <a href="#"><img src="@/assets/pic/icon1.png" width="345" height="394" class="icon1" alt=""></a>
             <a href="#"><img src="@/assets/pic/icon2.png" width="392" height="439" class="icon2" alt=""></a>
@@ -41,16 +42,47 @@
 </template>
 <script>
     import axios from 'axios'
+    //import VuePaginateAl from 'vue-paginate-al'
+    //import Pagination from 'vue-pagination-2';
+    import VuePaginate from 'vue-paginate'
+
 
     export default {
         head: {
             title: 'Новости'
         },
+
+        data(){
+            return{
+                page : 45,
+                limit : 10,
+                start : 1,
+                paginate: ['posts']
+            }
+        },
         asyncData({ req, params }) {
             return axios.get('https://jsonplaceholder.typicode.com/posts')
                             .then((res) => {
-                        return { posts: res.data.slice(0, 5) }
+                        return {
+                            posts: res.data.slice(0, 10)
+
+                        }
                     })
+        },
+        components : {
+            //VuePaginateAl
+            VuePaginate
+        },
+        methods : {
+            goToFunction : function(page)
+            {
+                axios.get('https://jsonplaceholder.typicode.com/posts').then(res => {
+                    this.posts = res.data.slice(10, 12);
+                })
+                .catch(e => {
+                this.errors.push(e)
+             })
+            }
         }
     }
 </script>
